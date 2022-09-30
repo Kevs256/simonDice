@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/app.css">
+    <title>Simon Says</title>
+
+</head>
+
+<body onload="carga()">
+    <div class="container">
+
+        <h1 class="text-center">Simon Says</h1>
+
+        <div class="flex-container">
+            <div class="sbtn green elemento" id="1" onclick="añadir1()">G</div>
+            <div class="sbtn red elemento" id="2" onclick="añadir2()">R</div>
+        </div>
+        <div class="flex-container">
+            <div class="sbtn yellow elemento" id="3" onclick="añadir3()">Y</div>
+            <div class="sbtn blue elemento" id="4" onclick="añadir4()">B</div>
+        </div>
+
+        <!-- este div lo desaparecemos despues de clickearlo -->
+        <div class="flex-container" id="start">
+            <div class="text-center">
+                <button class="btn tamaño" onclick="ocultar()">
+                    Start
+                </button>
+            </div>
+        </div>
+
+        <!-- este div lo aparecemos cuando clickeemos el de arriba -->
+        <div class="mostrarnombre flex-container direccion esconder" id="ingresarNombre">
+            <h2>ingrese su nombre</h2>
+            <input type="text" id="nombre">
+            <h2>seleccione la dificultad</h2>
+            <select name="dificultad" id="dificultadJuego">
+                <option value="facil">facil</option>
+                <option value="medio">medio</option>
+                <option value="dificil">dificil</option>
+            </select>
+            <button class="btn tamaño" onclick="continuar()">
+                continuar
+            </button>
+        </div>
+
+        <!-- iniciar el juego, aparece cuando demos continuar arriba y desaparece al instante -->
+
+        <div class="mostrarnombre flex-container direccion esconder" id="iniciarJuego">
+            <button class="btn tamaño" onclick="iniciarJuego()">
+                Iniciar juego
+            </button>
+        </div>
+
+        <!-- aca vamos a mostrar el nombre de la persona y el tiempo que queda pa responder -->
+        <div class="mostrarnombre flex-container esconder" id="mostrarCosas">
+            
+        </div>
+    </div>
+
+    <!-- aca le decimos que perdio -->
+    <div class="mostrarnombre flex-container esconder" id="perdio">
+            <h2>PERDISTE</h2>
+    </div>
+
+    <!-- esto sera la tabla de puntuaciones -->
+    <div class="tabla flex-container direccion quitarmargenes" id="tableido">
+        <h4>Mejores puntuaciones</h4>
+        <div class="item flex-container">
+            <p>posicion</p>
+            <p>nombre</p>
+            <p>puntaje</p>
+        </div>
+        <!-- aca toca ir construyendo e insertando los items -->
+    </div>
+    <script src="../controlador/controlador.js"></script>
+</body>
+</html>
