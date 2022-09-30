@@ -169,9 +169,6 @@ function iniciarJuego() {
         const perdio = document.getElementById("perdio");
         mostrarTode === null || mostrarTode === void 0 ? void 0 : mostrarTode.classList.add("esconder");
         perdio === null || perdio === void 0 ? void 0 : perdio.classList.remove("esconder");
-        //apareciendo de nuevo start
-        const startEsconder = document.getElementById("start");
-        startEsconder === null || startEsconder === void 0 ? void 0 : startEsconder.classList.remove("esconder");
         //creando objeto
         const player1 = new player(nombre, puntos, dificultad);
         player1.guardarRegistro2(player1);
@@ -204,6 +201,9 @@ function tomarRandom(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1) + min);
+}
+function recargarPagina() {
+    window.location.reload();
 }
 //nos asigna los segundos segun dificultad
 function modificadorDif() {
@@ -238,10 +238,14 @@ const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 function carga() {
     const p = new partida();
     let tabla = p.mostrarTabla();
-    console.log(tabla[0].nombre);
-    for (let index = 0; index < tabla.length; index++) {
+    tabla.sort(((a, b) => a.puntuacion - b.puntuacion));
+    tabla.reverse();
+    for (let index = 0; index < 10; index++) {
         const tableido = document.getElementById("tableido");
         let contenido3 = '<div class="item flex-container"><p>' + tabla[index].dificultad + '</p><p>' + tabla[index].nombre + '</p><p>' + tabla[index].puntuacion + '</p></div>';
         tableido === null || tableido === void 0 ? void 0 : tableido.insertAdjacentHTML('beforeend', contenido3);
     }
 }
+//meter intentar de nuevo
+//meter sonidos
+//quitar la repetidera de numero y de la tabla

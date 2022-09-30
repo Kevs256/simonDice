@@ -235,10 +235,6 @@ async function iniciarJuego(){
     mostrarTode?.classList.add("esconder")
     perdio?.classList.remove("esconder");
 
-    //apareciendo de nuevo start
-    const startEsconder = document.getElementById("start");
-    startEsconder?.classList.remove("esconder")
-
     //creando objeto
     const player1 = new player(nombre,puntos,dificultad)
     player1.guardarRegistro2(player1)
@@ -270,6 +266,10 @@ function tomarRandom(min:number, max:number) {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+function recargarPagina(){
+    window.location.reload()
 }
 
 //nos asigna los segundos segun dificultad
@@ -313,14 +313,14 @@ function carga(): void{
     const p = new partida()
     let tabla = p.mostrarTabla()
 
-    console.log(tabla[0].nombre)
+    tabla.sort(((a, b) => a.puntuacion - b.puntuacion));
+    tabla.reverse()
 
-    for (let index = 0; index < tabla.length; index++) {
+    for (let index = 0; index < 10; index++) {
         const tableido = document.getElementById("tableido")
         let contenido3 = '<div class="item flex-container"><p>'+tabla[index].dificultad+'</p><p>'+tabla[index].nombre+'</p><p>'+tabla[index].puntuacion+'</p></div>'
         tableido?.insertAdjacentHTML('beforeend', contenido3);
     }
-
 }
 
 //meter intentar de nuevo
