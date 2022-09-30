@@ -117,3 +117,17 @@ body {
 .parpadeo{
     background-color: white;
 }
+
+.item p{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.item{
+    width:600px;
+
+}
+body{
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}

@@ -1,5 +1,5 @@
 //esta linea importaba el modulo y me deja usar la clase
-//pero no me deja usar el script en el html
+//pero en consecuencia el type="module" no me deja usar el script en el html
 //import { jugador } from '../modelo/modelo.js'
 
 //---------------------------inicia el modelo ----------------------------------------
@@ -121,7 +121,11 @@ class partida{
 function ocultar(): void{
     const startEsconder = document.getElementById("start");
     const nombreMostrar = document.getElementById("ingresarNombre");
+
+    const instrucciones = document.getElementById("Insctrucciones");
+
     startEsconder?.classList.add("esconder");
+    instrucciones?.classList.add("esconder");
     nombreMostrar?.classList.add("mostrar");
 }
 
@@ -134,6 +138,15 @@ let dificultad:string = "easy"
 //variables del juego como tal
 let segundos:number = 1000
 let estado:string = "activo"
+
+var sonido = new Audio()
+sonido.src= "button-click.mp3"
+
+var sonido2 = new Audio()
+sonido2.src= "Light_Switch.mp3"
+
+var sonido3 = new Audio()
+sonido3.src= "piano-triste-1.mp3"
 
 //lista que almacena los pulsos de cada ronda
 let listapulsos:number[]=[]
@@ -160,6 +173,9 @@ async function iniciarJuego(){
 
     let contenido1 = '<p>' + nombre + '</p>'
     mostrarTode?.insertAdjacentHTML('beforeend', contenido1);
+
+    let contenido2 = '<p>tiempo restante:</p>'
+    mostrarTode?.insertAdjacentHTML('beforeend', contenido2);
 
     //paso el nombre del jugador
     const continuarMostrar = document.getElementById("iniciarJuego");
@@ -193,6 +209,7 @@ async function iniciarJuego(){
                 const g = document.getElementById("1")
                 //falta el audio
                 g?.classList.add("parpadeo")
+                sonido2.play()
                 setTimeout(function(){
                     g?.classList.remove("parpadeo")
                 }, segundos);
@@ -201,6 +218,7 @@ async function iniciarJuego(){
                 const g = document.getElementById("2")
                 //falta el audio
                 g?.classList.add("parpadeo")
+                sonido2.play()
                 setTimeout(function(){
                     g?.classList.remove("parpadeo")
                 }, segundos);
@@ -209,6 +227,7 @@ async function iniciarJuego(){
                 const g = document.getElementById("3")
                 //falta el audio
                 g?.classList.add("parpadeo")
+                sonido2.play()
                 setTimeout(function(){
                     g?.classList.remove("parpadeo")
                 }, segundos);
@@ -217,37 +236,43 @@ async function iniciarJuego(){
                 const g = document.getElementById("4")
                 //falta el audio
                 g?.classList.add("parpadeo")
+                sonido2.play()
                 setTimeout(function(){
                     g?.classList.remove("parpadeo")
                 }, segundos);
             }
+            //intervalo de tiempo entre parpadeos
             await sleep(segundos + 200)
         }
-        tiempoUsable = Math.round(listaColores.length*segundos*2/1000)
-        console.log(tiempoUsable)
+        //esta funcion establece el tiempo de ingreso de la serie
+        //entre mas dificultad menos tiempo
+        //no esta muy pensada, habria qu encontrar un mejor factor
+        //para añadir emocion
+        tiempoUsable = Math.round((listaColores.length*segundos*1+800)/1000)
         
         intervalo = setInterval('mostrarTiempo()',1000);
         await sleep(listaColores.length*segundos*2);
         puntos=puntos+1
     }
     //una vez que pierde se lo vamos a informar y procedemos a guardar el dato
+    sonido3.play()
     const perdio = document.getElementById("perdio")
     mostrarTode?.classList.add("esconder")
     perdio?.classList.remove("esconder");
 
+
     //creando objeto
     const player1 = new player(nombre,puntos,dificultad)
     player1.guardarRegistro2(player1)
-
-    carga()
-    console.log("salio")
 }
 
 //funcion que muestra el tiempo restante para introducir la respuesta
 async function mostrarTiempo(){
-    let mostrar:number = tiempoUsable-1
+    let mostrar:number = tiempoUsable
     const mostrarTode = document.getElementById("mostrarCosas")
-    let contenido2 = '<p>' + mostrar + '</p>'
+    const mostrarCuenta = document.getElementById("cuenta")
+    mostrarCuenta?.remove()
+    let contenido2 = '<p id="cuenta">' + mostrar + '</p>'
     mostrarTode?.insertAdjacentHTML('beforeend', contenido2);
     tiempoUsable=tiempoUsable-1
     if(tiempoUsable==0){
@@ -287,21 +312,27 @@ function modificadorDif(){
 
 //intente con un eventlistener pero no salio, toco hacerlo a lo maldita sea
 function añadir1(){
+    sonido.play()
     listapulsos.push(1)
 }
 
 //intente con un eventlistener pero no salio, toco hacerlo a lo maldita sea
 function añadir2(){
+    sonido.play()
     listapulsos.push(2)
+
 }
 
 //intente con un eventlistener pero no salio, toco hacerlo a lo maldita sea
 function añadir3(){
+    sonido.play()
     listapulsos.push(3)
+
 }
 
 //intente con un eventlistener pero no salio, toco hacerlo a lo maldita sea
 function añadir4(){
+    sonido.play()
     listapulsos.push(4)
 }
 
@@ -323,6 +354,5 @@ function carga(): void{
     }
 }
 
-//meter intentar de nuevo
 //meter sonidos
-//quitar la repetidera de numero y de la tabla
+//quitar la repetidera de numero 

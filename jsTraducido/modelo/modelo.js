@@ -26,7 +26,7 @@
 //     setPuntuacion(puntos:number):void
 // }
 // //clase del jugador por ahora tiene nombre y puntuacion
-// class jugador implements jugadorI{
+// export class jugador implements jugadorI{
 //     nombre:string
 //     puntuacion:number
 //     dificultad:string

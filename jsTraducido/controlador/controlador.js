@@ -1,6 +1,6 @@
 "use strict";
 //esta linea importaba el modulo y me deja usar la clase
-//pero no me deja usar el script en el html
+//pero en consecuencia el type="module" no me deja usar el script en el html
 //import { jugador } from '../modelo/modelo.js'
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
@@ -70,7 +70,9 @@ class partida {
 function ocultar() {
     const startEsconder = document.getElementById("start");
     const nombreMostrar = document.getElementById("ingresarNombre");
+    const instrucciones = document.getElementById("Insctrucciones");
     startEsconder === null || startEsconder === void 0 ? void 0 : startEsconder.classList.add("esconder");
+    instrucciones === null || instrucciones === void 0 ? void 0 : instrucciones.classList.add("esconder");
     nombreMostrar === null || nombreMostrar === void 0 ? void 0 : nombreMostrar.classList.add("mostrar");
 }
 //establecemos variables generales apra que solo existan una a la vez
@@ -81,6 +83,12 @@ let dificultad = "easy";
 //variables del juego como tal
 let segundos = 1000;
 let estado = "activo";
+var sonido = new Audio();
+sonido.src = "button-click.mp3";
+var sonido2 = new Audio();
+sonido2.src = "Light_Switch.mp3";
+var sonido3 = new Audio();
+sonido3.src = "piano-triste-1.mp3";
 //lista que almacena los pulsos de cada ronda
 let listapulsos = [];
 let listaColores = [];
@@ -101,6 +109,8 @@ function iniciarJuego() {
         mostrarTode === null || mostrarTode === void 0 ? void 0 : mostrarTode.classList.remove("esconder");
         let contenido1 = '<p>' + nombre + '</p>';
         mostrarTode === null || mostrarTode === void 0 ? void 0 : mostrarTode.insertAdjacentHTML('beforeend', contenido1);
+        let contenido2 = '<p>tiempo restante:</p>';
+        mostrarTode === null || mostrarTode === void 0 ? void 0 : mostrarTode.insertAdjacentHTML('beforeend', contenido2);
         //paso el nombre del jugador
         const continuarMostrar = document.getElementById("iniciarJuego");
         continuarMostrar === null || continuarMostrar === void 0 ? void 0 : continuarMostrar.classList.remove("mostrar");
@@ -129,6 +139,7 @@ function iniciarJuego() {
                     const g = document.getElementById("1");
                     //falta el audio
                     g === null || g === void 0 ? void 0 : g.classList.add("parpadeo");
+                    sonido2.play();
                     setTimeout(function () {
                         g === null || g === void 0 ? void 0 : g.classList.remove("parpadeo");
                     }, segundos);
@@ -137,6 +148,7 @@ function iniciarJuego() {
                     const g = document.getElementById("2");
                     //falta el audio
                     g === null || g === void 0 ? void 0 : g.classList.add("parpadeo");
+                    sonido2.play();
                     setTimeout(function () {
                         g === null || g === void 0 ? void 0 : g.classList.remove("parpadeo");
                     }, segundos);
@@ -145,6 +157,7 @@ function iniciarJuego() {
                     const g = document.getElementById("3");
                     //falta el audio
                     g === null || g === void 0 ? void 0 : g.classList.add("parpadeo");
+                    sonido2.play();
                     setTimeout(function () {
                         g === null || g === void 0 ? void 0 : g.classList.remove("parpadeo");
                     }, segundos);
@@ -153,35 +166,41 @@ function iniciarJuego() {
                     const g = document.getElementById("4");
                     //falta el audio
                     g === null || g === void 0 ? void 0 : g.classList.add("parpadeo");
+                    sonido2.play();
                     setTimeout(function () {
                         g === null || g === void 0 ? void 0 : g.classList.remove("parpadeo");
                     }, segundos);
                 }
+                //intervalo de tiempo entre parpadeos
                 yield sleep(segundos + 200);
             }
-            tiempoUsable = Math.round(listaColores.length * segundos * 2 / 1000);
-            console.log(tiempoUsable);
+            //esta funcion establece el tiempo de ingreso de la serie
+            //entre mas dificultad menos tiempo
+            //no esta muy pensada, habria qu encontrar un mejor factor
+            //para añadir emocion
+            tiempoUsable = Math.round((listaColores.length * segundos * 1 + 800) / 1000);
             intervalo = setInterval('mostrarTiempo()', 1000);
             yield sleep(listaColores.length * segundos * 2);
             puntos = puntos + 1;
         }
         //una vez que pierde se lo vamos a informar y procedemos a guardar el dato
+        sonido3.play();
         const perdio = document.getElementById("perdio");
         mostrarTode === null || mostrarTode === void 0 ? void 0 : mostrarTode.classList.add("esconder");
         perdio === null || perdio === void 0 ? void 0 : perdio.classList.remove("esconder");
         //creando objeto
         const player1 = new player(nombre, puntos, dificultad);
         player1.guardarRegistro2(player1);
-        carga();
-        console.log("salio");
     });
 }
 //funcion que muestra el tiempo restante para introducir la respuesta
 function mostrarTiempo() {
     return __awaiter(this, void 0, void 0, function* () {
-        let mostrar = tiempoUsable - 1;
+        let mostrar = tiempoUsable;
         const mostrarTode = document.getElementById("mostrarCosas");
-        let contenido2 = '<p>' + mostrar + '</p>';
+        const mostrarCuenta = document.getElementById("cuenta");
+        mostrarCuenta === null || mostrarCuenta === void 0 ? void 0 : mostrarCuenta.remove();
+        let contenido2 = '<p id="cuenta">' + mostrar + '</p>';
         mostrarTode === null || mostrarTode === void 0 ? void 0 : mostrarTode.insertAdjacentHTML('beforeend', contenido2);
         tiempoUsable = tiempoUsable - 1;
         if (tiempoUsable == 0) {
@@ -219,18 +238,22 @@ function modificadorDif() {
 }
 //intente con un eventlistener pero no salio, toco hacerlo a lo maldita sea
 function añadir1() {
+    sonido.play();
     listapulsos.push(1);
 }
 //intente con un eventlistener pero no salio, toco hacerlo a lo maldita sea
 function añadir2() {
+    sonido.play();
     listapulsos.push(2);
 }
 //intente con un eventlistener pero no salio, toco hacerlo a lo maldita sea
 function añadir3() {
+    sonido.play();
     listapulsos.push(3);
 }
 //intente con un eventlistener pero no salio, toco hacerlo a lo maldita sea
 function añadir4() {
+    sonido.play();
     listapulsos.push(4);
 }
 const sleep = (ms) => new Promise(r => setTimeout(r, ms));
@@ -246,6 +269,5 @@ function carga() {
         tableido === null || tableido === void 0 ? void 0 : tableido.insertAdjacentHTML('beforeend', contenido3);
     }
 }
-//meter intentar de nuevo
 //meter sonidos
-//quitar la repetidera de numero y de la tabla
+//quitar la repetidera de numero 
